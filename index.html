@@ -16,6 +16,35 @@
   <link rel="stylesheet" href="styles.css"/>
   
   <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      const menuIcon = document.querySelector('.menu-icon');
+      
+      menuToggle.addEventListener('click', function() {
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        navLinks.classList.toggle('active');
+        menuIcon.textContent = isExpanded ? '☰' : '✕';
+        
+        // Toggle body scroll
+        document.body.style.overflow = isExpanded ? '' : 'hidden';
+      });
+      
+      // Close menu when clicking on a link
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            menuToggle.setAttribute('aria-expanded', 'false');
+            navLinks.classList.remove('active');
+            menuIcon.textContent = '☰';
+            document.body.style.overflow = '';
+          }
+        });
+      });
+    });
+    
     // Hide text until font loads to prevent flash with smooth fade-in
     const style = document.createElement('style');
     style.textContent = `
@@ -25,6 +54,17 @@
       }
       body.loaded { 
         opacity: 1; 
+      }
+      
+      /* Smooth scrolling for anchor links */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -47,7 +87,10 @@
 <body>
   <!-- NAV -->
   <nav class="navbar">
-    <ul class="nav-links">
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-navigation">
+      <span class="menu-icon">☰</span>
+    </button>
+    <ul class="nav-links" id="main-navigation">
       <li><a href="#showreel">Showreel</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#contact">Contact</a></li>
