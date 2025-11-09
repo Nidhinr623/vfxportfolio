@@ -131,7 +131,7 @@ body {
 }
 
 /* Ripple element (created via pseudo) */
-.nav-links a::after {
+.nav-links a::before {
   content: "";
   position: absolute;
   left: 50%;
