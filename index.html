@@ -180,15 +180,24 @@
         <img src="assets/arrow_1.png" alt="" class="down-arrow-icon" aria-hidden="true">
       </div>
 
-       <div class="about-container cta-inner">
-      <h2 class="section-title">Let's collaborate</h2>
-      <p class="about-text center">
-        Open to full-time or freelance visual effects, Animation, and video editing gigs.
+      <div class="about-container cta-inner">
+        <h2 class="section-title">Let's collaborate</h2>
+        <p class="about-text center">
+          Open to full-time or freelance visual effects, Animation, and video editing gigs.
+        </p>
 
-      </p>
-      <a class="btn-primary" href="mailto:nidhinr623@gmail.com">CONNECT: EMAIL</a>
-       <a class="about-btn-inline" href="about.html">ABOUT ME</a>
-    </div>
+        <div class="contact-buttons">
+          <a id="email-link"
+             class="btn-primary email-btn"
+             href="#"
+             data-email="nidhinr623@gmail.com"
+             data-subject="Hello"
+             data-body="Hi Nidhin,"
+             >CONNECT: EMAIL</a>
+
+          <a class="about-btn-inline" href="about.html">ABOUT ME</a>
+        </div>
+      </div>
 
       <div class="social-links">
         <a href="https://www.instagram.com/nidhin_ravindran_309/" class="social-icon" aria-label="Instagram"><img src="assets/insta.png" alt="Instagram" /></a>
@@ -318,8 +327,32 @@
       if (e.key === 'Escape' && !modal.hidden) closeVideo();
     });
   </script>
+
+  <!-- Gmail compose redirect for all browsers -->
+  <script>
+    (function () {
+      const link = document.getElementById('email-link');
+      if (!link) return;
+
+      function buildGmailComposeUrl(email, subject, body) {
+        const params = new URLSearchParams();
+        if (email) params.set('to', email);
+        if (subject) params.set('su', subject);
+        if (body) params.set('body', body);
+        return 'https://mail.google.com/mail/?view=cm&fs=1&' + params.toString();
+      }
+
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const email = link.dataset.email || '';
+        const subject = link.dataset.subject || '';
+        const body = link.dataset.body || '';
+
+        // Open Gmail compose in a new tab for all browsers
+        const gmailUrl = buildGmailComposeUrl(email, subject, body);
+        window.open(gmailUrl, '_blank', 'noopener');
+      });
+    })();
+  </script>
 </body>
 </html>
-
-
-
