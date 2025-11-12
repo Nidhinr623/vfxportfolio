@@ -16,35 +16,6 @@
   <link rel="stylesheet" href="styles.css"/>
   
   <script>
-    // Mobile menu toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const menuToggle = document.querySelector('.menu-toggle');
-      const navLinks = document.querySelector('.nav-links');
-      const menuIcon = document.querySelector('.menu-icon');
-      
-      menuToggle.addEventListener('click', function() {
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        this.setAttribute('aria-expanded', !isExpanded);
-        navLinks.classList.toggle('active');
-        menuIcon.textContent = isExpanded ? '☰' : '✕';
-        
-        // Toggle body scroll
-        document.body.style.overflow = isExpanded ? '' : 'hidden';
-      });
-      
-      // Close menu when clicking on a link
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-          if (window.innerWidth <= 768) {
-            menuToggle.setAttribute('aria-expanded', 'false');
-            navLinks.classList.remove('active');
-            menuIcon.textContent = '☰';
-            document.body.style.overflow = '';
-          }
-        });
-      });
-    });
-    
     // Hide text until font loads to prevent flash with smooth fade-in
     const style = document.createElement('style');
     style.textContent = `
@@ -54,17 +25,6 @@
       }
       body.loaded { 
         opacity: 1; 
-      }
-      
-      /* Smooth scrolling for anchor links */
-      html {
-        scroll-behavior: smooth;
-      }
-      
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
       }
     `;
     document.head.appendChild(style);
@@ -87,10 +47,7 @@
 <body>
   <!-- NAV -->
   <nav class="navbar">
-    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-navigation">
-      <span class="menu-icon">☰</span>
-    </button>
-    <ul class="nav-links" id="main-navigation">
+    <ul class="nav-links">
       <li><a href="#showreel">Showreel</a></li>
       <li><a href="#portfolio">Portfolio</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -134,7 +91,7 @@
 
     <div class="portfolio-grid">
       <!-- YouTube -->
-      <article class="card" data-video="https://www.youtube.com/watch?v=giqXPNuWmdw" role="button" aria-label="Play BATTLEGROUNDS">
+      <article class="card" data-video="https://www.youtube.com/embed/YT_ID_BATTLEGROUNDS" role="button" aria-label="Play BATTLEGROUNDS">
         <img class="card-media" src="assets/Battlegrounds.png" alt="Battlegrounds"/>
         <div class="card-info">
           <h3 class="card-title">BATTLEGROUNDS</h3>
@@ -144,7 +101,7 @@
       </article>
 
       <!-- ECHOES FROM PAST -->
-      <article class="card" data-video="https://www.youtube.com/watch?v=dQw4w9WgXcQ" role="button" aria-label="Play ECHOES FROM PAST">
+      <article class="card" data-video="https://www.youtube.com/embed/giqXPNuWmdw?si=RTaZAYrI_YN_I4g-" role="button" aria-label="Play ECHOES FROM PAST">
         <img class="card-media" src="assets/Echosfrompast.png" alt="Echoes From Past"/>
         <div class="card-info">
           <h3 class="card-title">ECHOES FROM PAST</h3>
@@ -204,7 +161,7 @@
       </article>
 
       <!-- SHOWREEL 2023 -->
-      <article class="card" data-video="https://www.youtube.com/watch?v=pHyuoxWIHwU" role="button" aria-label="Play SHOWREEL 2023">
+      <article class="card" data-video="https://www.youtube.com/embed/pHyuoxWIHwU?si=Yb4AaGqcSk6lwkI9" role="button" aria-label="Play SHOWREEL 2023">
         <img class="card-media" src="assets/Showreel2023.png" alt="Showreel 2023"/>
         <div class="card-info">
           <h3 class="card-title">SHOWREEL 2023</h3>
@@ -306,37 +263,15 @@
           </div>
         `;
       } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        // Extract video ID from various YouTube URL formats
-        let videoId = '';
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        videoId = (match && match[2].length === 11) ? match[2] : null;
-        
-        // If still no valid video ID, try to get it from the last part of the URL
-        if (!videoId) {
-          const urlObj = new URL(url);
-          videoId = urlObj.searchParams.get('v') || url.split('/').pop().split('?')[0];
-        }
-        
-        if (!videoId) {
-          console.error('Could not extract YouTube video ID from URL:', url);
-          return;
-        }
-        
-        // Clean up the video ID (in case there are any parameters attached)
-        videoId = videoId.split('&')[0];
-        
+        const videoId = url.split('/').pop().split('?')[0];
         embedHTML = `
-          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-            <iframe 
-              src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&playsinline=1"
-              style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              title="YouTube video player"
-            ></iframe>
-          </div>
+          <iframe
+            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&vq=hd1080"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            style="width:100%;height:100%;"
+            allowfullscreen
+          ></iframe>
         `;
       }
 
