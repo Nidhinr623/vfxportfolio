@@ -740,7 +740,7 @@ section { margin-bottom: 0px; }
 
 .about-wrap {
   position: relative;
-  background: url('assets/Light travel.png') center/cover no-repeat fixed;
+  background: url('assets/Light travel.webp') center/cover no-repeat fixed;
   padding: clamp(60px, 10vh, 100px) clamp(16px, 3vw, 16px);
   border-top: 1px solid rgba(255,255,255,.05);
   border-bottom: 1px solid rgba(255,255,255,.05);
@@ -907,3 +907,4 @@ section { margin-bottom: 0px; }
     padding: 0 12px;
   }
 }
+
